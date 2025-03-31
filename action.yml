@@ -1,0 +1,34 @@
+name: 'Actions Composite Template'
+description: 'Greet someone'
+branding:
+  icon: "check-circle"
+  color: "green"
+inputs:
+  who-to-greet:
+    description: 'who to greet'
+    required: true
+    default: '${{github.actor}}'
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{steps.number-generator.outputs.number-id}}
+runs:
+  using: "composite"
+  steps:
+    - run: echo Hello ${{ inputs.who-to-greet }}.
+      shell: bash
+
+    - run: echo "numberid=${{ github.run_id }}-${{ github.run_attempt }}" >> $GITHUB_ENV
+      shell: bash
+    
+    - id: number-generator
+      run: echo "number-id= $numberid" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - run: echo "number $numberid"
+      shell: bash
+
+    - run: echo "Goodbye $YOU from $numberid"
+      shell: bash
+      env:
+        YOU: ${{ inputs.who-to-greet }}
