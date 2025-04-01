@@ -7,19 +7,23 @@ inputs:
   ProjectOwner:
     description: 'Project Owner'
     required: true
-    default: ${{ env.DUE_OWNER }}
+    default: ${{ vars.DUE_OWNER }}
   ProjectNumber:
     description: 'Project Number'
     required: true
-    default: ${{ env.DUE_PROJECT_NUMBER }}
+    default: ${{ vars.DUE_PROJECT_NUMBER }}
   DueDateFieldName:
     description: 'Field Name for Due Date'
     required: true
-    default: ${{ env.DUE_FIELD_NAME }}
+    default: ${{ vars.DUE_FIELD_NAME }}
   Status:
     description: 'Status to update'
     required: true
-    default: ${{ env.DUE_STATUS }}
+    default: ${{ vars.DUE_STATUS }}
+  TOKEN:
+    description: 'GitHub Token'
+    required: true
+    default: ${{ secrets.GH_PAT }}
 outputs:
   updated-count:
     description: "Number of items that have been updated"
