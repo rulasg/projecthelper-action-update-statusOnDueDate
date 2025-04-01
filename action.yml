@@ -37,7 +37,10 @@ runs:
       shell: pwsh
       run: |
 
+        #Load Module
         Import-Module -Name ProjectHelper
+
+        # Overdue Project Items
 
         $param = @{
           Owner = "${{ inputs.ProjectOwner }}"
@@ -45,12 +48,17 @@ runs:
           DueDateFieldName = "${{ inputs.DueDateFieldName }}"
           Status = "${{ inputs.Status }}"
         }
-
-        # Overdue Project Items
-        echo "Overdue Project Items"
         update-ProjectItemsStatusOnDueDate @param
 
-        $updated = (Get-ProjectItemStaged).Count
+        # Read staged items
+        $staged = Show-ProjectItemStaged
+
+        # Output the changes to the console
+        $staged | ForEach-Object { "`nItem: $($_.id) - $($_.Title)`n"; Show-ProjectItemStaged -Id $_.id }
+
+        # Sync staged items to project
         Sync-ProjectItemStaged
-        echo "updated-count=$updated" >> $GITHUB_OUTPUT
+
+        # Set output value
+        echo "updated-count=$($staged.Count)" >> $GITHUB_OUTPUT
 
