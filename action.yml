@@ -61,6 +61,7 @@ runs:
         $staged | ForEach-Object { "`nItem: $($_.id) - $($_.Title)`n"; Show-ProjectItemStaged -Id $_.id | ConvertTo-Json -Depth 5 | Out-String }
 
         # Sync staged items to project
+        "Syncing staged items to project..." | write-host
         Sync-ProjectItemStaged
 
         # Set output value
