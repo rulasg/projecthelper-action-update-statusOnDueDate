@@ -64,5 +64,7 @@ runs:
         Sync-ProjectItemStaged
 
         # Set output value
-        echo "updated-count=$($staged.Count)" >> $GITHUB_OUTPUT
+        $count = $staged.Count ?? 0
+        "updated-count output : $count" | write-host
+        echo "updated-count=$count" >> $GITHUB_OUTPUT
 
