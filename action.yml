@@ -32,6 +32,8 @@ runs:
   using: "composite"
   steps:
     - id: update-run
+      env:
+        GH_TOKEN: ${{ inputs.TOKEN }}
       shell: pwsh
       run: |
 
@@ -39,9 +41,9 @@ runs:
 
         $param = @{
           Owner = ${{ inputs.ProjectOwner }}
-          ProjectNumber = @{{ inputs.ProjectNumber}}
-          DueDateFieldName = @{{ inputs.DueDateFieldName }}
-          Status = @{{ inputs.Status }}
+          ProjectNumber = ${{ inputs.ProjectNumber}}
+          DueDateFieldName = ${{ inputs.DueDateFieldName }}
+          Status = ${{ inputs.Status }}
         }
 
         # Overdue Project Items
