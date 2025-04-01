@@ -40,10 +40,10 @@ runs:
         Import-Module -Name ProjectHelper
 
         $param = @{
-          Owner = ${{ inputs.ProjectOwner }}
-          ProjectNumber = ${{ inputs.ProjectNumber}}
-          DueDateFieldName = ${{ inputs.DueDateFieldName }}
-          Status = ${{ inputs.Status }}
+          Owner = "${{ inputs.ProjectOwner }}"
+          ProjectNumber = "${{ inputs.ProjectNumber}}"
+          DueDateFieldName = "${{ inputs.DueDateFieldName }}"
+          Status = "${{ inputs.Status }}"
         }
 
         # Overdue Project Items
