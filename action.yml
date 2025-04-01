@@ -7,23 +7,23 @@ inputs:
   ProjectOwner:
     description: 'Project Owner'
     required: true
-    default: ${{ vars.DUE_OWNER }}
+    # default: ${{ vars.DUE_OWNER }}
   ProjectNumber:
     description: 'Project Number'
     required: true
-    default: ${{ vars.DUE_PROJECT_NUMBER }}
+    # default: ${{ vars.DUE_PROJECT_NUMBER }}
   DueDateFieldName:
     description: 'Field Name for Due Date'
     required: true
-    default: ${{ vars.DUE_FIELD_NAME }}
+    # default: ${{ vars.DUE_FIELD_NAME }}
   Status:
     description: 'Status to update'
     required: true
-    default: ${{ vars.DUE_STATUS }}
+    # default: ${{ vars.DUE_STATUS }}
   TOKEN:
     description: 'GitHub Token'
     required: true
-    default: ${{ secrets.GH_PAT }}
+    # default: ${{ secrets.GH_PAT }}
 outputs:
   updated-count:
     description: "Number of items that have been updated"
@@ -35,7 +35,7 @@ runs:
       shell: pwsh
       run: |
 
-      Import-Module -Name ProjectHelper
+        Import-Module -Name ProjectHelper
 
         $param = @{
           Owner = ${{ inputs.ProjectOwner }}
