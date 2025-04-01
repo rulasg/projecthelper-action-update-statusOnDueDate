@@ -4,22 +4,22 @@ branding:
   icon: "check-circle"
   color: "green"
 inputs:
-  ProjectOwner: 
-    description: 'Project org owner'
+  ProjectOwner:
+    description: 'Project Owner'
     required: true
-    default: ${{ vars.DUE_OWNER }}
+    default: ${{ env.DUE_OWNER }}
   ProjectNumber:
     description: 'Project Number'
     required: true
-    default: ${{ vars.DUE_PROJECT_NUMBER }}
-  DueDateFieldName: 
-    description: 'Date field name to use for due date'
+    default: ${{ env.DUE_PROJECT_NUMBER }}
+  DueDateFieldName:
+    description: 'Field Name for Due Date'
     required: true
-    default: ${{ vars.DUE_FIELD_NAME }}
-  Status: 
-    description: 'Status to set all due items'
+    default: ${{ env.DUE_FIELD_NAME }}
+  Status:
+    description: 'Status to update'
     required: true
-    default: ${{ vars.DUE_STATUS }}
+    default: ${{ env.DUE_STATUS }}
 outputs:
   updated-count:
     description: "Number of items that have been updated"
