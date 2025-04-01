@@ -54,7 +54,7 @@ runs:
         $staged = Show-ProjectItemStaged
 
         # Output the changes to the console
-        $staged | ForEach-Object { "`nItem: $($_.id) - $($_.Title)`n"; Show-ProjectItemStaged -Id $_.id }
+        $staged | ForEach-Object { "`nItem: $($_.id) - $($_.Title)`n"; Show-ProjectItemStaged -Id $_.id | ConvertTo-Json -Depth 5 | Out-String }
 
         # Sync staged items to project
         Sync-ProjectItemStaged
