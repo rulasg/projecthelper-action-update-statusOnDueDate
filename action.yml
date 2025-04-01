@@ -50,7 +50,7 @@ runs:
         }
         
         "Calling Update-ProjectItemsStatusOnDueDate with parameter:" | write-host
-        $param | write-host
+        $param | ConvertTo-Json | Out-String | write-host
 
         update-ProjectItemsStatusOnDueDate @param
 
