@@ -4,31 +4,47 @@ branding:
   icon: "check-circle"
   color: "green"
 inputs:
-  who-to-greet:
-    description: 'who to greet'
+  ProjectOwner: 
+    description: 'Project org owner'
     required: true
-    default: '${{github.actor}}'
+    default: ${{ vars.DUE_OWNER }}
+  ProjectNumber:
+    description: 'Project Number'
+    required: true
+    default: ${{ vars.DUE_PROJECT_NUMBER }}
+  DueDateFieldName: 
+    description: 'Date field name to use for due date'
+    required: true
+    default: ${{ vars.DUE_FIELD_NAME }}
+  Status: 
+    description: 'Status to set all due items'
+    required: true
+    default: ${{ vars.DUE_STATUS }}
 outputs:
-  random-number:
-    description: "Random number"
-    value: ${{steps.number-generator.outputs.number-id}}
+  updated-count:
+    description: "Number of items that have been updated"
+    value: ${{steps.update-run.outputs.updated-count}}
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
+    - id: update-run
+      shell: pwsh
+      run: |
 
-    - run: echo "numberid=${{ github.run_id }}-${{ github.run_attempt }}" >> $GITHUB_ENV
-      shell: bash
-    
-    - id: number-generator
-      run: echo "number-id= $numberid" >> $GITHUB_OUTPUT
-      shell: bash
+      Import-Module -Name ProjectHelper
 
-    - run: echo "number $numberid"
-      shell: bash
+        $param = @{
+          Owner = ${{ inputs.ProjectOwner }}
+          ProjectNumber = @{{ inputs.ProjectNumber}}
+          DueDateFieldName = @{{ inputs.DueDateFieldName }}
+          Status = @{{ inputs.Status }}
+        }
 
-    - run: echo "Goodbye $YOU from $numberid"
-      shell: bash
-      env:
-        YOU: ${{ inputs.who-to-greet }}
+        # Overdue Project Items
+        echo "Overdue Project Items"
+        update-ProjectItemsStatusOnDueDate @param
+
+        $updated = (Get-ProjectItemStaged).Count
+        Sync-ProjectItemStaged
+        echo "updated-count=$updated" >> $GITHUB_OUTPUT
+
