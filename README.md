@@ -4,36 +4,43 @@ Composite action template to learn and seed other actions.
 
 ## Calling the action
 
-This workflow will run a job with a step that will call the action and a job that will call the resusable workflow that will call the action.
+This workflow will update 
 
 ```yaml
-name: Call Actions Composite Template
-
-on: 
+name: Update Project Due Date
+on:
+  # Run manually
   workflow_dispatch:
 
+    # run at 5am every morning
+  schedule:
+    - cron: '0 5 * * *' 
 jobs:
-  ACT-call:
-    name: Call to Actions Composite template
+  validation:
+    name: Update Project Due Date
     runs-on: ubuntu-latest
-
     steps:
 
-      # call the action with no parameters
-      - name: Execute Actions-composite-template action
-        id: actions_composite
-        uses: rulasg/actions-composite-template@main
-
-      # Check step output value of the action
-      - run: echo "The output was ${{ steps.actions_composite.outputs.random-number }}"
-        shell: bash
-       
-      # call the action with parameters
-      - uses: rulasg/actions-composite-template@main
+      - name: Powershell Module Setup
+        uses: rulasg/psmodule-setup-action@dev
         with:
-          who-to-greet: "Raúl"
+          Name: ProjectHelper
+          AllowPreReleaseVersions: true
+      
+      - name: Check module installation
+        shell: pwsh
+        run: |
+          Get-Module -ListAvailable
+          Import-Module -Name ProjectHelper
+          Get-Module -Name ProjectHelper
 
-  ACT-reusable:
-    # call the reusable WF
-    uses: rulasg/actions-composite-template/.github/workflows/actions-composite-template.yaml@main
+      - name: Update Project Due Dates
+        id: udpate-due
+        uses: rulasg/update-ProjectItemsStatusOnDueDate@mvp
+        with:
+          ProjectOwner: ${{ vars.DUE_OWNER }}
+          ProjectNumber: ${{ vars.DUE_PROJECT_NUMBER }}
+          DueDateFieldName: ${{ vars.DUE_FIELD_NAME }}
+          Status: ${{ vars.DUE_STATUS }}
+          TOKEN: ${{ secrets.GH_PAT }}
 ```

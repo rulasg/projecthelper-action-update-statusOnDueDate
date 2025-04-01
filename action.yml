@@ -48,6 +48,10 @@ runs:
           DueDateFieldName = "${{ inputs.DueDateFieldName }}"
           Status = "${{ inputs.Status }}"
         }
+        
+        "Calling Update-ProjectItemsStatusOnDueDate with parameter:" | write-host
+        $param | write-host
+
         update-ProjectItemsStatusOnDueDate @param
 
         # Read staged items
