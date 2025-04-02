@@ -43,7 +43,7 @@ jobs:
       # ProjectHelper Update Status on Due Date run
       - name: Update Project Due Dates
         id: updated-due
-        uses: rulasg/update-ProjectItemsStatusOnDueDate@mvp
+        uses: rulasg/update-ProjectItemsStatusOnDueDate@v1
         with:
           TOKEN: ${{ env.GH_TOKEN }}
           ProjectOwner: ${{ env.DUE_OWNER }}
