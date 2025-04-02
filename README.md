@@ -1,10 +1,14 @@
-# Actions Composite Template
+# ProjectHelper Update Status on Due Date
 
-Composite action template to learn and seed other actions.
+## Description
+
+This actions allows you to update the status of project items based on the value of a date field. Status will be changed if the date field has a date before or equal to the current date.
 
 ## Calling the action
 
-This workflow will update 
+This workflow will update the status of project items based on the value of a date field. Status will be changed if the date field has a date before or equal to the current date.
+
+For loading ProjectHelper module, the action will use the `rulasg/psmodule-setup-action` action. This action will install the ProjectHelper module from the PowerShell Gallery.
 
 ```yaml
 name: Update Project Due Date
@@ -19,28 +23,32 @@ jobs:
   validation:
     name: Update Project Due Date
     runs-on: ubuntu-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.GH_PAT }}
+      DUE_OWNER: ${{ vars.DUE_OWNER }}
+      DUE_PROJECT_NUMBER: ${{vars.DUE_PROJECT_NUMBER}}
+      DUE_FIELD_NAME: ${{ vars.DUE_FIELD_NAME }}
+      DUE_STATUS: ${{ vars.DUE_STATUS }}
+
     steps:
 
+    # Install ProjectHelper module
       - name: Powershell Module Setup
-        uses: rulasg/psmodule-setup-action@dev
+        uses: rulasg/psmodule-setup-action@v2
         with:
           Name: ProjectHelper
           AllowPreReleaseVersions: true
-      
-      - name: Check module installation
-        shell: pwsh
-        run: |
-          Get-Module -ListAvailable
-          Import-Module -Name ProjectHelper
-          Get-Module -Name ProjectHelper
 
+      # ProjectHelper Update Status on Due Date run
       - name: Update Project Due Dates
-        id: udpate-due
+        id: updated-due
         uses: rulasg/update-ProjectItemsStatusOnDueDate@mvp
         with:
-          ProjectOwner: ${{ vars.DUE_OWNER }}
-          ProjectNumber: ${{ vars.DUE_PROJECT_NUMBER }}
-          DueDateFieldName: ${{ vars.DUE_FIELD_NAME }}
-          Status: ${{ vars.DUE_STATUS }}
-          TOKEN: ${{ secrets.GH_PAT }}
+          TOKEN: ${{ env.GH_TOKEN }}
+          ProjectOwner: ${{ env.DUE_OWNER }}
+          ProjectNumber: ${{ env.DUE_PROJECT_NUMBER }}
+          DueDateFieldName: ${{ env.DUE_FIELD_NAME }}
+          Status: ${{ env.DUE_STATUS }}
+
 ```
