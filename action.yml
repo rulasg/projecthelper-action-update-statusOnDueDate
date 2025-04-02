@@ -1,8 +1,9 @@
-name: 'Actions Composite Template'
-description: 'Greet someone'
+name: 'ProjectHelper Update Status On Due Date'
+description: 'Change the status of you project items based on a date field.'
+author: "rulasg"
 branding:
-  icon: "check-circle"
-  color: "green"
+  icon: "table"
+  color: "purple"
 inputs:
   ProjectOwner:
     description: 'Project Owner'
@@ -67,5 +68,5 @@ runs:
         # Set output value
         $count = $staged.Count ?? 0
         "updated-count output : $count" | write-host
-        echo "updated-count=$count" >> $GITHUB_OUTPUT
+        echo "updated-count = $count" >> $GITHUB_OUTPUT
 
