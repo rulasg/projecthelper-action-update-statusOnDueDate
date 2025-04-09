@@ -20,7 +20,7 @@ on:
   schedule:
     - cron: '0 5 * * *' 
 jobs:
-  validation:
+  ProjectUpdate:
     name: Update Project Due Date
     runs-on: ubuntu-latest
 
@@ -43,7 +43,7 @@ jobs:
       # ProjectHelper Update Status on Due Date run
       - name: Update Project Due Dates
         id: updated-due
-        uses: rulasg/update-ProjectItemsStatusOnDueDate@mvp
+        uses: rulasg/projecthelper-action-update-statusOnDueDate@v1
         with:
           TOKEN: ${{ env.GH_TOKEN }}
           ProjectOwner: ${{ env.DUE_OWNER }}
